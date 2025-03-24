@@ -12,6 +12,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <java.version>17</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
@@ -22,8 +23,6 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
-
-    
     <!-- Firebase Admin SDK -->
     <dependency>
       <groupId>com.google.firebase</groupId>
@@ -44,10 +43,16 @@
       <artifactId>slf4j-api</artifactId>
       <version>2.0.0</version>
     </dependency>
+    <!--Javafx-->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.0</version>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>17</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-web</artifactId>
+        <version>17</version>
     </dependency>
   </dependencies>
 
@@ -66,19 +71,30 @@
 
         <!-- Plugin para ejecutar la aplicación -->
         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <configuration>
+            <mainClass>com.chilitos.optimizador.App</mainClass>
+            <fork>true</fork>
+            <executable>${JAVA_HOME}/bin/java</executable>
+          </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.8</version>
+            <configuration>
+                <mainClass>com.chilitos.optimizador.App</mainClass>
+            </configuration>
+             <executions>
                 <execution>
-                    <goals>
-                        <goal>java</goal>
-                    </goals>
+                <goals>
+                    <goal>run</goal>
+                </goals>
                 </execution>
             </executions>
-            <configuration>
-                <mainClass>com.chilitos.optimizador.MapaOSM</mainClass>
-            </configuration>
         </plugin>
     </plugins>
 </build>
