@@ -1,2 +1,4 @@
 com\chilitos\optimizador\App.class
 com\chilitos\optimizador\MapaOSM.class
+com\chilitos\optimizador\JavaBridge.class
+com\chilitos\optimizador\GrafoBuilder.class

@@ -9,7 +9,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         MapaOSM panelMapa = new MapaOSM();
-        Scene scene = new Scene(panelMapa, 900, 700);
+        Scene scene = new Scene(panelMapa, 1000, 800);
 
         stage.setTitle("Optimizador de Rutas");
         stage.setScene(scene);
@@ -17,7 +17,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
 
