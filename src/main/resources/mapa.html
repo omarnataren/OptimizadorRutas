@@ -24,43 +24,52 @@
         const modo = javaConnector.getModoSeleccion();
 
         if (modo === "origen" || modo === "destino") {
-        javaConnector.setPoint(lat, lng);
-        L.marker([lat, lng], {
-            title: modo
-        }).addTo(map);
-        } 
+            javaConnector.setPoint(lat, lng);
+
+            const marker = L.marker([lat, lng], {
+                title: modo
+            }).addTo(map).bindPopup(`${modo} (seleccionado manualmente)`).openPopup();
+
+            if (modo === "origen") {
+                marcadoresOrigen.forEach(m => map.removeLayer(m));
+                marcadoresOrigen = [marker];
+            } else if (modo === "destino") {
+                marcadoresDestino.push(marker);
+            }
+        }
     }
-    });
+});
+
 
     let marcadoresOrigen = [];
-let marcadoresDestino = [];
+    let marcadoresDestino = [];
 
-function buscarLugar(query, tipo) {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      if (data.length > 0) {
-        const lat = parseFloat(data[0].lat);
-        const lon = parseFloat(data[0].lon);
-        const marker = L.marker([lat, lon]).addTo(map).bindPopup(`${tipo}: ${query}`).openPopup();
-        map.setView([lat, lon], 15);
+    function buscarLugar(query, tipo) {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+        fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lon = parseFloat(data[0].lon);
+            const marker = L.marker([lat, lon]).addTo(map).bindPopup(`${tipo}: ${query}`).openPopup();
+            map.setView([lat, lon], 15);
 
-        if (tipo === "origen") {
-          marcadoresOrigen.forEach(m => map.removeLayer(m));
-          marcadoresOrigen = [marker];
-        } else if (tipo === "destino") {
-          marcadoresDestino.push(marker);
-        }
+            if (tipo === "origen") {
+            marcadoresOrigen.forEach(m => map.removeLayer(m));
+            marcadoresOrigen = [marker];
+            } else if (tipo === "destino") {
+            marcadoresDestino.push(marker);
+            }
 
-        if (typeof javaConnector !== "undefined") {
-          javaConnector.setModoSeleccion(tipo);
-          javaConnector.setPoint(lat, lon);
-        }
-      } else {
-        alert("Lugar no encontrado");
-      }
-    });
+            if (typeof javaConnector !== "undefined") {
+            javaConnector.setModoSeleccion(tipo);
+            javaConnector.setPoint(lat, lon);
+            }
+            } else {
+                alert("Lugar no encontrado");
+            }
+        });
     }
 
     function limpiarMarcadores(tipo) {

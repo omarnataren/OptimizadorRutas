@@ -1,4 +1,4 @@
-package com.chilitos.optimizador;
+package com.chilitos.optimizador.mapa;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,10 +28,10 @@ public class GrafoBuilder {
             }
             reader.close();
 
-            System.out.println("✅ JSON recibido desde Overpass:");
+            System.out.println("JSON recibido desde Overpass:");
             System.out.println(response.toString());
         } else {
-            System.out.println("❌ Error HTTP: " + responseCode);
+            System.out.println("Error HTTP: " + responseCode);
         }
         con.disconnect();
     }

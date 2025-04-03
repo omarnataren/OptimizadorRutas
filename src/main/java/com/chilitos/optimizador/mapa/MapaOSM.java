@@ -1,13 +1,17 @@
-package com.chilitos.optimizador;
+package com.chilitos.optimizador.mapa;
 
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
+import com.chilitos.optimizador.JavaBridge;
+
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -35,30 +39,36 @@ public class MapaOSM extends BorderPane {
             }
         });
 
-        VBox barraLateral = new VBox(15);
-        barraLateral.setPadding(new Insets(15));
+        VBox barraLateral = new VBox(12);
+        barraLateral.setPadding(new Insets(20));
         barraLateral.setStyle("-fx-background-color:rgb(182, 197, 99);");
         
         Label opciones = new Label("Opciones: ");
-        opciones.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        opciones.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         opciones.setTextFill(Color.WHITE);
         Label origen = new Label("Origen ");
         TextField origenField = new TextField();
         Button origenButton = new Button("+ Añadir");
+        Button origenMButton = new Button("Añadir Manualmente");
         Button limpiarOButton = new Button("Limpiar origen");
         Label destino = new Label("Destino ");
         TextField destinoField = new TextField();
         Button destinoButton = new Button("+ Añadir");
+        Button destinoMButton = new Button("Añadir Manualmente");
         Button limpiarButton = new Button("Limpiar destinos");
         Button calcular = new Button("Calcular ruta");
-
+        calcular.setPrefWidth(220);
+        calcular.setPrefHeight(40);
+        calcular.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        calcular.setTextFill(Color.WHITE);
+        
         origenButton.setOnAction(e -> {
             String texto = origenField.getText();
             if (!texto.isEmpty() && javaBridge != null) {
                 javaBridge.buscarYSeleccionar(texto, "origen");
             }
         });
-        
+
         destinoButton.setOnAction(e -> {
             String texto = destinoField.getText();
             if (!texto.isEmpty() && javaBridge != null) {
@@ -66,6 +76,28 @@ public class MapaOSM extends BorderPane {
             }
         });     
         
+        origenMButton.setOnAction(e -> {
+            if (javaBridge != null) {
+                javaBridge.setModoSeleccion("origen");
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("Modo actualizado");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Estas en modo de seleccion de origen");
+                alerta.showAndWait();
+            }
+        });
+        
+        destinoMButton.setOnAction(e -> {
+            if (javaBridge != null) {
+                javaBridge.setModoSeleccion("destino");
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("Modo actualizado");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Estas en modo de seleccion de destino");
+                alerta.showAndWait();
+            }
+        }); 
+
         limpiarOButton.setOnAction(e -> {
             origenField.setText("");
             if (javaBridge != null) {
@@ -86,12 +118,17 @@ public class MapaOSM extends BorderPane {
             }
         });
         
+        HBox origenGrupo = new HBox(10);
+        origenGrupo.getChildren().addAll(origenField, origenButton);
+
+        HBox destinoGrupo = new HBox(10);
+        destinoGrupo.getChildren().addAll(destinoField, destinoButton);
 
         barraLateral.getChildren().addAll(
             opciones,
-            origen, origenField, origenButton,
+            origen, origenGrupo, origenMButton,
             limpiarOButton,
-            destino, destinoField, destinoButton,
+            destino, destinoGrupo, destinoMButton,
             limpiarButton,
             calcular
         );
