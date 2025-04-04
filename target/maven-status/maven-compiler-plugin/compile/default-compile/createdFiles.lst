@@ -1,5 +1,6 @@
 com\chilitos\optimizador\firebase\Paquete.class
 com\chilitos\optimizador\mapa\MapaOSM.class
+com\chilitos\optimizador\firebase\Transportista.class
 com\chilitos\optimizador\App.class
 com\chilitos\optimizador\firebase\FirebaseService.class
 com\chilitos\optimizador\JavaBridge.class

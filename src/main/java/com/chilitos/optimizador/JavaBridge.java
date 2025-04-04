@@ -10,8 +10,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chilitos.optimizador.firebase.FirebaseService;
+import com.chilitos.optimizador.firebase.Paquete;
 import com.chilitos.optimizador.mapa.GrafoBuilder;
 import com.chilitos.optimizador.mapa.MapaOSM;
+import com.google.gson.Gson;
 
 public class JavaBridge {
     private WebEngine engine;
@@ -33,6 +36,11 @@ public class JavaBridge {
         this.engine = engine;
     }
 
+    public String obtenerPaquetesComoJson() throws Exception {
+        List<Paquete> paquetes = FirebaseService.obtenerPaquetes();
+        return new Gson().toJson(paquetes);
+    }
+
     public void abrirMapa() {
         MapaOSM mapa = new MapaOSM();
         Scene scene = new Scene(mapa, 900, 600);
@@ -41,8 +49,6 @@ public class JavaBridge {
         mapaStage.setTitle("Mapa de Rutas");
         mapaStage.show();
     }
-
-
     
     public String getModoSeleccion() {
         return modoSeleccion;

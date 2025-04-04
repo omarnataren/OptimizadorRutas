@@ -1,6 +1,8 @@
 function abrirMapa() {
     if (typeof javaConnector !== "undefined") {
+        alert("HOLA");
       javaConnector.abrirMapa();
+      alert("HOLA BB");
     } else {
       alert("Conexión con Java no disponible");
     }
@@ -23,3 +25,28 @@ function mostrarPaquetes(paquetes){
         `;
     });
 }
+
+function mostrarTransportista(transportista){
+    const tabla = document.getElementById("tablaTransportistas").getElementsByTagName("tbody")[0];
+    tabla.innerHTML = ""; 
+
+    paquetes.forEach((t) => {
+        const fila = tabla.insertRow();
+        fila.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.nombre} kg</td>
+            <td>${t.apellidoP}</td>
+            <td>${t.apellidoM}</td>
+        `;
+    });
+}
+
+setTimeout(() => {
+    if (typeof javaConnector !== "undefined") {
+      const paquetesJson = javaConnector.obtenerPaquetesComoJson();
+      const paquetes = JSON.parse(paquetesJson);
+      mostrarPaquetes(paquetes);
+    }
+  }, 1000);
+
+  

@@ -11,7 +11,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import java.util.List;
 
 public class FirebaseService {
-    public static List<Paquete> obtenerPaquetes() throws ExecutionException, InterruptedException {
+    public static List<Paquete> obtenerPaquetes() throws  Exception {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("paquetes").get();
         List<QueryDocumentSnapshot> documentos = future.get().getDocuments();
@@ -20,6 +20,18 @@ public class FirebaseService {
         for (QueryDocumentSnapshot doc : documentos) {
             Paquete p = doc.toObject(Paquete.class);
             lista.add(p);
+        }
+        return lista;
+    }
+    public static List<Transportista> obtenerTransportistas() throws  Exception {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = db.collection("transportistas").get();
+        List<QueryDocumentSnapshot> documentos = future.get().getDocuments();
+
+        List<Transportista> lista = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : documentos) {
+            Transportista t = doc.toObject(Transportista.class);
+            lista.add(t);
         }
         return lista;
     }
