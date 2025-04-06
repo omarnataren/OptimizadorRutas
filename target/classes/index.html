@@ -9,8 +9,8 @@
 <body>
     <nav class="navigationBar">
         <ul>
-          <li><a>Paquetes</a></li>
-          <li><a>Transportistas</a></li>
+          <li><button id="navPaquetes">Paquetes</button></li>
+          <li><button id="navTransportistas">Transportistas</button></li>
         </ul>
     </nav>
     <header>
@@ -22,6 +22,7 @@
                 <tr>
                     <td>ID</td>
                     <td>Nombre</td>
+                    <td>Descripcion</td>
                     <td>Peso</td>
                     <td>Direccion</td>
                     <td>Estatus</td>
@@ -31,24 +32,53 @@
                
             </tbody>
         </table>
+        <button id="abrirFormularioPaquetes">Añadir Paquete</button>
     </section>
-    <section id="Transportistas">
-        <h2>Paquetes</h2>
+    <div id="FormularioPaquetes" class="modal" style="display: none;">
+        <div class="modal-contenido-p">
+          <span class="cerrar" onclick="cerrarModal('FormularioPaquetes')">&times;</span>
+          <h3>Nuevo Paquete</h3>
+          <form id="formPaquete">
+            <input type="text" name="Nombre" placeholder="Nombre" required /><br/>
+            <input type="text" name="Descripcion" placeholder="Descripcion" required /><br/>
+            <input type="number" step="any" name="Peso" placeholder="Peso" required /><br/>
+            <input type="text" name="Direccion" placeholder="Direccion" required /><br/>
+            <select required>
+              <option value="pendiente">Pendiente</option>
+            </select><br/>
+            <button type="submit">Añadir</button>
+          </form>
+        </div>
+    </div> 
+    <section id="Transportistas" style="display:none;">
+        <h2>Transportistas</h2>
         <table id="tablaTransportistas">
             <thead>
                 <tr>
                     <td>ID</td>
                     <td>Nombre</td>
-                    <td>Peso</td>
-                    <td>Direccion</td>
-                    <td>Estatus</td>
+                    <td>Apellido Paterno</td>
+                    <td>Apellido Materno</td>
                 </tr>
             </thead>
             <tbody>
                
             </tbody>
         </table>
+        <button id="abrirFormularioTransportistas">Añadir Transportista</button>
     </section>
+    <div id="FormularioTransportistas" class="modal" style="display: none;">
+        <div class="modal-contenido-t">
+          <span class="cerrar" onclick="cerrarModal('FormularioTransportistas')">&times;</span>
+          <h3>Nuevo Transportista</h3>
+          <form id="formTransportista">
+            <input type="text" name="Nombre" placeholder="Nombre" required /><br />
+            <input type="text" name="Apellido Paterno" placeholder="Apellido Paterno" required /><br />
+            <input type="text" name="Apellido Materno" placeholder="Apellido Materno" required /><br />
+            <button type="submit">Añadir</button>
+          </form>
+        </div>
+    </div>      
     <section id="acciones">
         <button id="botonMapa">Abrir mapa</button>
     </section>

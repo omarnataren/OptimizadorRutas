@@ -1,20 +1,18 @@
 package com.chilitos.optimizador.firebase;
 
 public class Transportista {
-    private int id;
     private String nombre, apellidoP, apellidoM;
 
     public Transportista(){
 
     }
 
-    public int getId() {
-        return id;
+    public Transportista( String nombre, String apellidoP, String apellidoM) {
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;

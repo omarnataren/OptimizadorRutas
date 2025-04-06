@@ -9,11 +9,15 @@ import netscape.javascript.JSObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.chilitos.optimizador.firebase.FirebaseService;
 import com.chilitos.optimizador.firebase.Paquete;
+import com.chilitos.optimizador.firebase.Transportista;
 import com.chilitos.optimizador.mapa.GrafoBuilder;
 import com.chilitos.optimizador.mapa.MapaOSM;
+import com.google.cloud.firestore.Firestore;
+import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
 
 public class JavaBridge {
@@ -37,8 +41,35 @@ public class JavaBridge {
     }
 
     public String obtenerPaquetesComoJson() throws Exception {
-        List<Paquete> paquetes = FirebaseService.obtenerPaquetes();
+        List<Map<String, Object>> paquetes = FirebaseService.obtenerPaquetes();
         return new Gson().toJson(paquetes);
+    }
+
+    public String obtenerTransportistasComoJson() throws Exception {
+        List<Map<String, Object>> transportistas = FirebaseService.obtenerTransportistas();
+        return new Gson().toJson(transportistas);
+    }
+
+    public void añadirPaquetes(String nombre, String descripcion, double peso, String direccion, String estatus) throws Exception{
+        try{
+            String idPersonalizado = FirebaseService.generarIdPersonalizado("paquete");
+            Paquete paquete = new Paquete(nombre, descripcion, peso, direccion, estatus);
+            FirestoreClient.getFirestore().collection("paquetes").document(idPersonalizado).set(paquete);
+        } catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error al añadir paquete: " + e.getMessage());
+        }
+    }
+
+    public void añadirTransportistas(String nombre, String apellidoP, String apellidoM) throws Exception{
+        try{    
+            String idPersonalizado = FirebaseService.generarIdPersonalizado("transportista");
+            Transportista transportista = new Transportista( nombre, apellidoP, apellidoM);
+            FirestoreClient.getFirestore().collection("transportista").document(idPersonalizado).set(transportista);
+        } catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error al añadir transportista: " + e.getMessage());
+        }
     }
 
     public void abrirMapa() {

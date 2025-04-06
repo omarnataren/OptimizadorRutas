@@ -41,7 +41,7 @@ public class MapaOSM extends BorderPane {
 
         VBox barraLateral = new VBox(12);
         barraLateral.setPadding(new Insets(20));
-        barraLateral.setStyle("-fx-background-color:rgb(182, 197, 99);");
+        barraLateral.setStyle("-fx-background-color:rgb(28, 105, 229);");
         
         Label opciones = new Label("Opciones: ");
         opciones.setFont(Font.font("Arial", FontWeight.BOLD, 20));

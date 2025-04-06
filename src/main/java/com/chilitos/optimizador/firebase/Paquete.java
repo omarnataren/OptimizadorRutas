@@ -7,7 +7,17 @@ public class Paquete {
     private String direccion;
     private String estatus;
 
-    public Paquete() {}
+    public Paquete() {
+        
+    }
+
+    public Paquete(String nombre, String descripcion, double peso, String direccion, String estatus) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.peso = peso;
+        this.direccion = direccion;
+        this.estatus = estatus;
+    }
 
     public String getNombre() {
         return nombre;
