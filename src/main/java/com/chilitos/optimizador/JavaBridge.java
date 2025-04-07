@@ -16,14 +16,13 @@ import com.chilitos.optimizador.firebase.Paquete;
 import com.chilitos.optimizador.firebase.Transportista;
 import com.chilitos.optimizador.mapa.GrafoBuilder;
 import com.chilitos.optimizador.mapa.MapaOSM;
-import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
 
 public class JavaBridge {
     private WebEngine engine;
     private String modoSeleccion = "ninguno";
-
+    private GrafoBuilder grafoBuilder = new GrafoBuilder(); 
     private Stage parentStage;
 
     private double origenLat;
@@ -31,6 +30,7 @@ public class JavaBridge {
     private boolean origenSet = false;
 
     private List<double[]> destinos = new ArrayList<>();
+    private List<String> direccionesSeleccionadas = new ArrayList<>();
 
     public JavaBridge(Stage parentStage) {
         this.parentStage = parentStage;
@@ -71,7 +71,7 @@ public class JavaBridge {
             System.out.println("Error al añadir transportista: " + e.getMessage());
         }
     }
-
+    
     public void abrirMapa() {
         MapaOSM mapa = new MapaOSM();
         Scene scene = new Scene(mapa, 900, 600);
@@ -79,8 +79,36 @@ public class JavaBridge {
         mapaStage.setScene(scene);
         mapaStage.setTitle("Mapa de Rutas");
         mapaStage.show();
+
+        mapa.onDocumentReady(() -> {
+            for (String direccion : direccionesSeleccionadas) {
+                mapa.getJavaBridge().buscarYSeleccionar(direccion, "destino");
+            }
+        });
     }
+
+    public void setDirecciones(Object lista) {
     
+        if (lista instanceof JSObject) {
+            JSObject jsList = (JSObject) lista;
+            int length = (int) jsList.getMember("length");
+    
+            List<String> direcciones = new ArrayList<>();
+    
+            for (int i = 0; i < length; i++) {
+                Object value = jsList.getSlot(i);
+                direcciones.add(String.valueOf(value));
+            }
+    
+            this.direccionesSeleccionadas = direcciones;
+    
+            System.out.println("Lista de direcciones:");
+            direcciones.forEach(System.out::println);
+        } else {
+            System.out.println("No es una lista válida");
+        }
+    }
+
     public String getModoSeleccion() {
         return modoSeleccion;
     }
@@ -145,8 +173,6 @@ public class JavaBridge {
         alerta.showAndWait();
     }
 
-    private GrafoBuilder grafoBuilder = new GrafoBuilder(); 
-
     public void calcularRuta() {
     if (!origenSet) {
         Alert alerta = new Alert(Alert.AlertType.WARNING);
@@ -158,7 +184,7 @@ public class JavaBridge {
     }
 
     try {
-        grafoBuilder.construirDesdeOverpass(origenLat, origenLng, 300);
+        grafoBuilder.construirDesdeOverpass(origenLat, origenLng, 100);
     } catch (IOException e) {
         e.printStackTrace();
     }

@@ -7,6 +7,9 @@ const abrirFormT = document.getElementById('abrirFormularioTransportistas')
 const formPaquetes = document.getElementById("formPaquete")
 const formTransportista = document.getElementById("formTransportista")
 
+let paqueteSeleccionados = [];
+let transportistaSeleccionado = null;
+
 // EVENTOS NAV Y FORMULARIOS
 navTransportistas.onclick = () => mostrar('Transportistas')
 navPaquetes.onclick = () => mostrar('Paquetes')
@@ -30,6 +33,7 @@ function mostrarPaquetes(paquetes){
     paquetes.forEach((p) => {
         const fila = tabla.insertRow();
         fila.innerHTML = `
+            <td><input type="checkbox" class="check-paquete" data-direccion="${p.direccion}" id="${p.id}" /></td>
             <td>${p.id}</td>
             <td>${p.nombre}</td>
             <td>${p.descripcion}</td>
@@ -46,6 +50,7 @@ function mostrarTransportistas(transportista){
     transportista.forEach((t) => {
         const fila = tabla.insertRow();
         fila.innerHTML = `
+            <td><input type="radio" name="transportista" class="radio-transportista" value="${t.id}" /></td>
             <td>${t.id}</td>
             <td>${t.nombre}</td>
             <td>${t.apellidoP}</td>
@@ -53,7 +58,6 @@ function mostrarTransportistas(transportista){
         `;
     });
 }
-
 
 //FUNCIONES PARA ABRIR Y CERRAR LOS FORMS
 function abrirModal(id) {
@@ -79,15 +83,44 @@ function cargarDatos() {
       }, 50);
 }
 
+// SELECCIONAR PAQUETES Y TRANS
+document.addEventListener("change", (e) => {
+    if (e.target.classList.contains("check-paquete")) {
+      const direccion = e.target.dataset.direccion;
+  
+      if (e.target.checked) {
+        paqueteSeleccionados.push(direccion);
+        alert("Se añadio un paquete: " + paqueteSeleccionados);
+      } else {
+        paqueteSeleccionados = paqueteSeleccionados.filter(d => d !== direccion);
+      }
+  
+      verificarActivacionBotonMapa();
+    }
+  
+    if (e.target.classList.contains("radio-transportista")) {
+      transportistaSeleccionado = e.target.value;
+      alert("Se añadio un transportista: " + transportistaSeleccionado);
+      verificarActivacionBotonMapa();
+    }
+});
+
+// VERIFICAR BTON
+function verificarActivacionBotonMapa() {
+    botonMapa.disabled = !(transportistaSeleccionado && paqueteSeleccionados.length > 0);
+}
+
 // ABRIR MAPA
 botonMapa.addEventListener("click", function abrirMapa() {
     if (typeof javaConnector !== "undefined") {
-      javaConnector.abrirMapa();
-      alert("Mapa abierto");
+        javaConnector.setDirecciones(paqueteSeleccionados);
+        javaConnector.abrirMapa();
+        alert("Mapa abierto");
     } else {
-      alert("Conexión con Java no disponible");
+        alert("Conexión con Java no disponible");
     }
 });
+
 //SUBMIT DE PAQUETES
 formPaquetes.addEventListener("submit", function(e) {
     e.preventDefault();
@@ -109,6 +142,7 @@ formPaquetes.addEventListener("submit", function(e) {
 
     cerrarModal('FormularioPaquetes');
 });
+
 //SUBMIT DE TRANSPORTISTAS
 formTransportista.addEventListener("submit", function(e) {
     e.preventDefault();

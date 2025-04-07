@@ -49,12 +49,12 @@ public class MapaOSM extends BorderPane {
         Label origen = new Label("Origen ");
         TextField origenField = new TextField();
         Button origenButton = new Button("+ Añadir");
-        Button origenMButton = new Button("Añadir Manualmente");
+        // Button origenMButton = new Button("Añadir Manualmente");
         Button limpiarOButton = new Button("Limpiar origen");
         Label destino = new Label("Destino ");
         TextField destinoField = new TextField();
         Button destinoButton = new Button("+ Añadir");
-        Button destinoMButton = new Button("Añadir Manualmente");
+        // Button destinoMButton = new Button("Añadir Manualmente");
         Button limpiarButton = new Button("Limpiar destinos");
         Button calcular = new Button("Calcular ruta");
         calcular.setPrefWidth(220);
@@ -76,27 +76,27 @@ public class MapaOSM extends BorderPane {
             }
         });     
         
-        origenMButton.setOnAction(e -> {
-            if (javaBridge != null) {
-                javaBridge.setModoSeleccion("origen");
-                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-                alerta.setTitle("Modo actualizado");
-                alerta.setHeaderText(null);
-                alerta.setContentText("Estas en modo de seleccion de origen");
-                alerta.showAndWait();
-            }
-        });
+        // origenMButton.setOnAction(e -> {
+        //     if (javaBridge != null) {
+        //         javaBridge.setModoSeleccion("origen");
+        //         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        //         alerta.setTitle("Modo actualizado");
+        //         alerta.setHeaderText(null);
+        //         alerta.setContentText("Estas en modo de seleccion de origen");
+        //         alerta.showAndWait();
+        //     }
+        // });
         
-        destinoMButton.setOnAction(e -> {
-            if (javaBridge != null) {
-                javaBridge.setModoSeleccion("destino");
-                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-                alerta.setTitle("Modo actualizado");
-                alerta.setHeaderText(null);
-                alerta.setContentText("Estas en modo de seleccion de destino");
-                alerta.showAndWait();
-            }
-        }); 
+        // destinoMButton.setOnAction(e -> {
+        //     if (javaBridge != null) {
+        //         javaBridge.setModoSeleccion("destino");
+        //         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        //         alerta.setTitle("Modo actualizado");
+        //         alerta.setHeaderText(null);
+        //         alerta.setContentText("Estas en modo de seleccion de destino");
+        //         alerta.showAndWait();
+        //     }
+        // }); 
 
         limpiarOButton.setOnAction(e -> {
             origenField.setText("");
@@ -126,9 +126,11 @@ public class MapaOSM extends BorderPane {
 
         barraLateral.getChildren().addAll(
             opciones,
-            origen, origenGrupo, origenMButton,
+            origen, origenGrupo, 
+            // origenMButton,
             limpiarOButton,
-            destino, destinoGrupo, destinoMButton,
+            destino, destinoGrupo, 
+            // destinoMButton,
             limpiarButton,
             calcular
         );
@@ -146,6 +148,14 @@ public class MapaOSM extends BorderPane {
 
     public WebEngine getWebEngine() {
         return engine;
+    }
+
+    public void onDocumentReady(Runnable tarea) {
+        engine.documentProperty().addListener((obs, oldDoc, newDoc) -> {
+            if (newDoc != null) {
+                tarea.run();
+            }
+        });
     }
 }
 

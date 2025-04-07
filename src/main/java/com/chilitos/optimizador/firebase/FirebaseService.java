@@ -1,7 +1,6 @@
 package com.chilitos.optimizador.firebase;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;

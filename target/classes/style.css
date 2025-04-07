@@ -61,17 +61,20 @@ thead td {
     font-weight: bold;
     padding: 10px;
     border: 1px solid #90caf9;
-    text-align: left;
+    text-align: center;
 }
 
 tbody td {
     padding: 10px;
     border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: middle;
 }
 
 tbody tr:hover {
     background-color: #f1faff;
 }
+
 
 /* Botones añadir Paquetes y transportistas*/
 #abrirFormularioPaquetes,

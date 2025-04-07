@@ -20,6 +20,7 @@
         <table id="tablaPaquetes">
             <thead>
                 <tr>
+                    <td>Añadir</td>
                     <td>ID</td>
                     <td>Nombre</td>
                     <td>Descripcion</td>
@@ -32,7 +33,7 @@
                
             </tbody>
         </table>
-        <button id="abrirFormularioPaquetes">Añadir Paquete</button>
+        <button id="abrirFormularioPaquetes">+ Nuevo Paquete</button>
     </section>
     <div id="FormularioPaquetes" class="modal" style="display: none;">
         <div class="modal-contenido-p">
@@ -46,7 +47,7 @@
             <select required>
               <option value="pendiente">Pendiente</option>
             </select><br/>
-            <button type="submit">Añadir</button>
+            <button type="submit">Guardar</button>
           </form>
         </div>
     </div> 
@@ -55,6 +56,7 @@
         <table id="tablaTransportistas">
             <thead>
                 <tr>
+                    <td>Añadir</td>
                     <td>ID</td>
                     <td>Nombre</td>
                     <td>Apellido Paterno</td>
@@ -65,7 +67,7 @@
                
             </tbody>
         </table>
-        <button id="abrirFormularioTransportistas">Añadir Transportista</button>
+        <button id="abrirFormularioTransportistas">+ Nuevo Transportista</button>
     </section>
     <div id="FormularioTransportistas" class="modal" style="display: none;">
         <div class="modal-contenido-t">
@@ -75,12 +77,12 @@
             <input type="text" name="Nombre" placeholder="Nombre" required /><br />
             <input type="text" name="Apellido Paterno" placeholder="Apellido Paterno" required /><br />
             <input type="text" name="Apellido Materno" placeholder="Apellido Materno" required /><br />
-            <button type="submit">Añadir</button>
+            <button type="submit">Guardar</button>
           </form>
         </div>
     </div>      
     <section id="acciones">
-        <button id="botonMapa">Abrir mapa</button>
+        <button id="botonMapa" disabled>Abrir mapa</button>
     </section>
     <script src="script.js"></script>
 </body>
