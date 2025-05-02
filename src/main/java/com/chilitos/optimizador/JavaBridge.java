@@ -2,6 +2,8 @@ package com.chilitos.optimizador;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
@@ -10,12 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import org.apache.commons.logging.Log;
 
 import com.chilitos.optimizador.firebase.FirebaseService;
 import com.chilitos.optimizador.firebase.Paquete;
 import com.chilitos.optimizador.firebase.Transportista;
 import com.chilitos.optimizador.mapa.GrafoBuilder;
 import com.chilitos.optimizador.mapa.MapaOSM;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
 
@@ -52,7 +59,7 @@ public class JavaBridge {
 
     public void añadirPaquetes(String nombre, String descripcion, double peso, String direccion, String estatus) throws Exception{
         try{
-            String idPersonalizado = FirebaseService.generarIdPersonalizado("paquete");
+            String idPersonalizado = FirebaseService.generarIdPersonalizado("paquetes");
             Paquete paquete = new Paquete(nombre, descripcion, peso, direccion, estatus);
             FirestoreClient.getFirestore().collection("paquetes").document(idPersonalizado).set(paquete);
         } catch(Exception e){
@@ -72,6 +79,39 @@ public class JavaBridge {
         }
     }
     
+    public void eliminarPaquetes(String tipo, String id){
+        System.out.println("🧪 ID recibido: " + id);
+        Alert alerta = new Alert(AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmar acción");
+        alerta.setHeaderText(null);
+        alerta.setContentText("¿Estás seguro de que deseas eliminar el elemento con ID " + id + "?");
+        
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK){
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference docRef = db.collection(tipo).document(id);
+            try {
+                docRef.delete().get();
+                System.out.println("Se eliminó el documento: " + id);
+                DocumentReference contadorRef = db.collection("contadores").document("global");
+
+                db.runTransaction(transaction -> {
+                Long valorActual = transaction.get(contadorRef).get().getLong(tipo);
+                long nuevoValor = (valorActual != null && valorActual > 0) ? valorActual - 1 : 0;
+                transaction.update(contadorRef, tipo, nuevoValor);
+                System.out.println("Contador actualizado. Nuevo valor de " + tipo + ": " + nuevoValor);
+                return null;
+            }).get();
+            
+            } catch (Exception e) {
+                System.err.println("Error al eliminar el documento:");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Acción cancelada");
+        }
+    }
+
     public void abrirMapa() {
         MapaOSM mapa = new MapaOSM();
         Scene scene = new Scene(mapa, 900, 600);

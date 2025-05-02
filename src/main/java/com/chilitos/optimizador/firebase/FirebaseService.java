@@ -51,7 +51,7 @@ public class FirebaseService {
 
         transaction.update(ref, tipo, nuevo);
 
-        String prefijo = tipo.equals("paquete") ? "PAQ" : "TRANS";
+        String prefijo = tipo.equals("paquetes") ? "PAQ" : "TRANS";
         return String.format("%s%04d", prefijo, nuevo);
     }).get();
     }

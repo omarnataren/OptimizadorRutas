@@ -3,7 +3,6 @@ package com.chilitos.optimizador.firebase;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.gson.Gson;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -25,7 +24,6 @@ public class FirebaseConfig {
 
             String templateJson = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            // Reemplaza las variables del template por sus valores del .env
             String jsonWithSecrets = templateJson
                     .replace("${private_key_id}", dotenv.get("private_key_id"))
                     .replace("${private_key}", dotenv.get("private_key").replace("\\n", "\n"))
@@ -46,4 +44,3 @@ public class FirebaseConfig {
         }
     }
 }
-

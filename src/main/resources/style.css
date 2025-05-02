@@ -91,8 +91,27 @@ tbody tr:hover {
     font-weight: bold;
 }
 
-#AñadirP:hover,
-#AñadirT:hover {
+#eliminarPaquete,
+#eliminarTransportista {
+    padding: 10px 15px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border: 2px solid transparent;
+    background-color: #1976d2;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+#abrirFormularioPaquetes:hover,
+#abrirFormularioTransportistas:hover {
+    background-color: #1565c0;
+}
+
+#eliminarPaquete:hover,
+#eliminarTransportista:hover {
     background-color: #1565c0;
 }
 
